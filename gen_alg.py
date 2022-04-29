@@ -13,6 +13,7 @@ GENES = '''abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 1234567890, .-;:
 TARGET = "Random string"
 
 class Individual(object):
+
     def __init__(self, chromosome):
         self.chromosome = chromosome
         self.fitness = self.cal_fitness()
@@ -26,11 +27,13 @@ class Individual(object):
                 fitness += 1
         return fitness
 
+    @classmethod
     def mutated_genes(self):
         global GENES
         gene = random.choice(GENES)
         return gene
 
+    @classmethod    
     def create_gnome(self):
         global TARGET
         gnome_len = len(TARGET)
@@ -59,8 +62,8 @@ def main():
     population = []
     
     for _ in range(POPULATION_SIZE):
-        gnome = Individual.create_gnome()
-        population.append(Individual(gnome))
+            gnome = Individual.create_gnome()
+            population.append(Individual(gnome))
     
     while not found:
         population = Individual.selection(population)
@@ -86,5 +89,7 @@ def main():
 
             print("Generations: {}\tString: {}\tFitness: {}".format(generation, "".join(population[0].chromosome), population[0].fitness))
 
-if __name__ == "__main__":
+            generation += 1
+
+if __name__ == '__main__':
     main()
