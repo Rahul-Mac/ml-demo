@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-
-__author__ = "Rahul Mac"
-
 import random as rd
 from re import search
 import numpy as np
@@ -51,18 +47,18 @@ class Space():
 
     def set_gBest(self): 
         for particle in self.particles:
-            fitness_candidate = self.fitness(particle)
-            if particle.gBest_value > fitness_candidate:
-                particle.gBest_value = fitness_candidate
-                particle.gBest_position = particle.position
+            best_fitness_candidate = self.fitness(particle)
+            if self.gBest_value > best_fitness_candidate:
+                self.gBest_value = best_fitness_candidate
+                self.gBest_position = particle.position
 
     def update_particle(self):
         for particle in self.particles:
             global W
-            intertial = W * particle.velocity
-            self_confidence = c1 * rd.random() * (particle.pBest_positon - particle.position)
-            swarm_confidence = c2 * rd.random() * (particle.gBest_positon - particle.position)
-            new_velocity = inertial + self.confidence + swarm_confidence
+            inertial = W * particle.velocity
+            self_confidence = c1 * rd.random() * (particle.pBest_position - particle.position)
+            swarm_confidence = c2 * rd.random() * (self.gBest_position - particle.position)
+            new_velocity = inertial + self_confidence + swarm_confidence
             particle.velocity = new_velocity
             particle.update()
 
@@ -73,17 +69,19 @@ class Space():
 
         for particle in self.particles:
             pyplot.plot(particle.position[0], particle.position[1], 'ro')
-            pyplot.show()
             pyplot.plot(self.gBest_position[0], self.gBest_position[1], 'bo')
-            pyplot.show()
+        pyplot.show()
 
 
 search_space = Space(1, target_error, n_particles)
 particle_vector = [Particle() for _ in range(search_space.n_particles)]
+search_space.particles = particle_vector
+
 iteration = 0
 while(iteration < n_iterations):
     search_space.set_pBest()
     search_space.set_gBest()
+
     search_space.show_particles(iteration)
     if(abs(search_space.gBest_value - search_space.target) <= search_space.target_error):
         break
