@@ -6,6 +6,7 @@ import random as rd
 from re import search
 import numpy as np
 from matplotlib import pyplot
+import os
 
 W = 0.5
 c1 = 0.8
@@ -67,6 +68,10 @@ class Space():
             particle.update()
 
     def show_particles(self, iteration):
+        output_path = "./output"
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+        
         print(iteration, 'iteration')
         print("Best position in this time: ", self.gBest_position)
         print("Best value in this time: ", self.gBest_value)
@@ -74,7 +79,7 @@ class Space():
         for particle in self.particles:
             pyplot.plot(particle.position[0], particle.position[1], 'ro')
             pyplot.plot(self.gBest_position[0], self.gBest_position[1], 'bo')
-        pyplot.show()
+        pyplot.savefig('output/image'+str(iteration)+'.png')
 
 
 search_space = Space(1, target_error, n_particles)
