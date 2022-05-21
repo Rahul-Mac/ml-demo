@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+__author__ = "Rahul Mac"
+
 import random as rd
 from re import search
 import numpy as np
